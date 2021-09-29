@@ -53,6 +53,8 @@ class Profiler(Dependency):
         initial_options = self.container.config.get(f'{YAPPI_CONFIG_KEY}.{self.alias}.initial_options', default={})
         # 防止YAML中声明值为None
         self.initial_options = (initial_options or {}) | self.initial_options
+        # 内置函数耗时也加入统计表
+        self.initial_options.setdefault('builtins', True)
         getfunc_options = self.container.config.get(f'{YAPPI_CONFIG_KEY}.{self.alias}.getfunc_options', default={})
         # 防止YAML中声明值为None
         self.getfunc_options = (getfunc_options or {}) | self.getfunc_options
