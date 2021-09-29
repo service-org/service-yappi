@@ -78,10 +78,9 @@ class Profiler(Dependency):
         yappi.stop()
         ystats = yappi.get_func_stats(**self.getfunc_options)
         pstats = yappi.convert2pstats(ystats)
-        base_name = f'{int(time.time() * 1000000)}.prof'
-        file_path = os.path.join(tempfile.gettempdir(), 'profiler')
-        os.path.exists(file_path) or os.makedirs(file_path, exist_ok=True)
-        file_name = os.path.join(file_path, base_name)
+        file_name = f'{int(time.time() * 1000000)}.prof'
+        store_dir = tempfile.gettempdir()
+        file_name = os.path.join(store_dir, file_name)
         pstats.dump_stats(file_name)
-        logger.debug(f'dump {base_name} to {file_path} succ')
+        logger.debug(f'dump {file_name} to {store_dir} succ')
         yappi.clear_stats()
