@@ -24,7 +24,7 @@ class Profiler(Dependency):
     doc: https://github.com/sumerc/yappi
     """
 
-    name = 'Profiler'
+    name = 'YappiProfiler'
 
     def __init__(
             self,
@@ -53,8 +53,8 @@ class Profiler(Dependency):
         initial_options = self.container.config.get(f'{YAPPI_CONFIG_KEY}.{self.alias}.initial_options', default={})
         # 防止YAML中声明值为None
         self.initial_options = (initial_options or {}) | self.initial_options
-        # 内置函数耗时也加入统计表
-        self.initial_options.setdefault('builtins', True)
+        # 不统计内置函数执行的耗时
+        self.initial_options.setdefault('builtins', False)
         getfunc_options = self.container.config.get(f'{YAPPI_CONFIG_KEY}.{self.alias}.getfunc_options', default={})
         # 防止YAML中声明值为None
         self.getfunc_options = (getfunc_options or {}) | self.getfunc_options
@@ -84,5 +84,5 @@ class Profiler(Dependency):
         store_dir = tempfile.gettempdir()
         file_path = os.path.join(store_dir, file_name)
         pstats.dump_stats(file_path)
-        logger.debug(f'dump {file_name} to {store_dir} succ')
+        logger.debug(f'yappi dump {file_name} to {store_dir} succ')
         yappi.clear_stats()
