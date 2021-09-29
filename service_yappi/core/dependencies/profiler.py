@@ -24,7 +24,7 @@ class Profiler(Dependency):
     doc: https://github.com/sumerc/yappi
     """
 
-    name = 'YappiProfiler'
+    name = 'Profiler'
 
     def __init__(
             self,
@@ -84,5 +84,5 @@ class Profiler(Dependency):
         store_dir = tempfile.gettempdir()
         file_path = os.path.join(store_dir, file_name)
         pstats.dump_stats(file_path)
-        logger.debug(f'yappi dump {file_name} to {store_dir} succ')
+        logger.debug(f'yappi dump {context.original_entrypoint} to {file_name}')
         yappi.clear_stats()
